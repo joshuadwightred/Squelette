@@ -5,8 +5,8 @@ public class Reservation {
     private String date, resto;
     private CheckBox checkBox;
 
-    public Reservation(String date, String resto, CheckBox checkBox){
-        this.checkBox = checkBox;
+    public Reservation(String date, String resto){
+        this.checkBox = new CheckBox();
         this.date = date;
         this.resto = resto;
     }
