@@ -364,14 +364,14 @@ public class RestoConnexion {
     }
 
     /**
-     * SELECTION : liste des reservations anterieures a la date courante.
+     * SELECTION : liste des reservations antérieures à la date courante.
      *
-     * @return un tableau de chaines a 2 dimensions. Pour n reservations
-     * passees, le tableau rendu contient n lignes et 3 colonnes
+     * @return Un tableau de chaines a 2 dimensions. Pour n reservations
+     * passées, le tableau rendu contient n lignes et 3 colonnes
      * (une ligne par date) ; la premiere colonne contient les dates
-     * (sous forme de chaine), la deuxieme colonne contient le nom d’un
-     * restaurant, et la troisieme contient le prix du repas
-     * @throws SQLException   si erreur lors de l’execution de la requete SQL
+     * (sous forme de chaine), la deuxième colonne contient le nom d’un
+     * restaurant et la troisième contient le prix du repas
+     * @throws SQLException   si erreur lors de l’execution de la requête SQL
      * @throws ParseException si erreur de format
      */
     public String[][] requeteConso() throws SQLException, ParseException {
@@ -492,10 +492,10 @@ public class RestoConnexion {
         for (int i = 0; i < 30; i++) {
             date.tomorrow();
             rtn[i] = new String[]{date.toSQLDate().toString(), ""};
-            for (String[] cDate : array) {
-                if (new MyDate(cDate[0]).equals(date)) {
-                    rtn[i] = cDate;
-                }
+            if(i >= array.size()){
+                rtn[i][1] = "";
+            } else {
+                rtn[i][1] = array.get(i)[1];
             }
         }
         return rtn;

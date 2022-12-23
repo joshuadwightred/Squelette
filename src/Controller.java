@@ -8,6 +8,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 
 
@@ -22,12 +24,24 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<Reservation, Boolean> mySelectionColumn;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        myDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        myRestaurantColumn.setCellValueFactory(new PropertyValueFactory<>("resto"));
+        mySelectionColumn.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
+        try {
+            loadData();
+        } catch (SQLException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    private void loadData(){
+    private void loadData() throws SQLException, ParseException {
         data_table = FXCollections.observableArrayList();
-
-        data_table.add(new Reservation("25/12/2022", "Nimporte"));
-
+        String[][] reservations = ControllerAuth.backend.requeteReserv();
+        for(int i = 0; i < 30; i++){
+            data_table.add(new Reservation(reservations[i][0], reservations[i][1]));
+        }
         myTableView.setItems(data_table);
     }
 
@@ -35,12 +49,5 @@ public class Controller implements Initializable {
         Platform.exit();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        myDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        myRestaurantColumn.setCellValueFactory(new PropertyValueFactory<>("resto"));
-        mySelectionColumn.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
-        loadData();
-    }
 
 }

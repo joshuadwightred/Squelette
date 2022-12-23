@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class Fenetre extends Application {
 
@@ -15,10 +14,6 @@ public class Fenetre extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Main.fxml")));
-        primaryStage.setTitle("Restaurants GUI");
-        primaryStage.setScene(new Scene(root));
-
         selectDatabase();
     }
 

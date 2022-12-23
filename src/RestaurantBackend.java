@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 public class RestaurantBackend {
 
@@ -93,6 +94,41 @@ public class RestaurantBackend {
 
     public void setDate(String date) throws ParseException {
         dateCourante = new MyDate(date);
+    }
+
+    public MyDate getDateCourante(){
+        return dateCourante;
+    }
+
+    public String getIdEmp(){
+        return idEmp;
+    }
+
+    public String[][] requeteReserv() throws SQLException {
+        PreparedStatement pstmt = connexion.prepareStatement("SELECT date, restaurant\n" + "FROM prefix_reservation\n" + "WHERE identifiant = ?\n" + "    AND date > ?\n" + "ORDER BY date;");
+        pstmt.setInt(1, Integer.parseInt(idEmp));
+        pstmt.setDate(2, dateCourante.toSQLDate());
+
+        ResultSet res = pstmt.executeQuery();
+        ArrayList<String[]> array = new ArrayList<>();
+        while (res.next()) {
+            array.add(new String[]{res.getString(1), res.getString(2)});
+        }
+        res.close();
+        pstmt.close();
+
+        MyDate date = new MyDate(dateCourante);
+        String[][] rtn = new String[30][];
+        for (int i = 0; i < 30; i++) {
+            date.tomorrow();
+            rtn[i] = new String[]{date.toSQLDate().toString(), ""};
+            if(i >= array.size()){
+                rtn[i][1] = "";
+            } else {
+                rtn[i][1] = array.get(i)[1];
+            }
+        }
+        return rtn;
     }
 
 }
