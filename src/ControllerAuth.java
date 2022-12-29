@@ -44,6 +44,7 @@ public class ControllerAuth {
             stage.show();
         } catch (Exception e) {
             myLabel.setText("Erreur d'authentification");
+            System.out.println(e.getMessage());
         }
     }
 
